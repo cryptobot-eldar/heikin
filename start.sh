@@ -1,6 +1,6 @@
 #!/bin/bash
 #exec &>>/var/log/work.log
-#exec "$@"
+
 while true
 do
 SERVICE0='heikin_ashi.py'
@@ -23,6 +23,18 @@ then
 else
     echo there is no such "$SERVICE1 service, starting"
     python /usr/local/bin/heikin_day.py
+fi
+
+
+
+SERVICE2='btc_ha.py'
+
+if ps ax | grep -v grep | grep $SERVICE2 > /dev/null
+then
+    echo "$SERVICE2 service running "
+else
+    echo there is no such "$SERVICE2 service, starting"
+    python /usr/local/bin/btc_ha.py
 fi
 
 sleep 10
