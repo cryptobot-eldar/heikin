@@ -276,7 +276,7 @@ def HA():
 
 
                 try:
-                    db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+                    db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
                     cursor = db.cursor()
                     cursor.execute("update markets set ha_close = %s, ha_open =%s, ha_low =%s, ha_high =%s, ha_time =%s, ha_time_second=%s  where market = %s",(HA_Close, HA_Open, HA_Low, HA_High, currenttime, currtime, market))
                     db.commit()
@@ -423,7 +423,7 @@ def HA():
                 if ((ha_direction_down0 and ha_direction_down1  and ha_direction_down_long_0) or (ha_direction_down0  and ha_direction_down1 and ha_direction_down_long_0 and ha_direction_down_long_1) or (ha_direction_down0 and ha_direction_down1 and ha_direction_down_longer)) and bought_quantity_sql > 0 and HAD_trend!='UP' and (hah_direction_down_long_0 or hah_direction_down0):
 
                     try:
-                        db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+                        db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
                         cursor = db.cursor()
                         printed = ('      '+ market + '   Received HA sell signal  ' + '  ' + HA_trend)
                         cursor.execute('update orders set sell = 1 where active=1 and market =("%s")' % market)
@@ -442,7 +442,7 @@ def HA():
 
                 if (lastcandlesize>prevcandlesize and fivehourcurrentopen>last and fivehourprevopen<fivehourprevclose and HAH_trend!='UP'):
                     try:
-                        db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+                        db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
                         cursor = db.cursor()
                         printed = ('      ' + market + '   Received HA sell signal  ' + '  ' + HA_trend)
                         cursor.execute('update orders set sell = 2 where active=1 and market =("%s")' % market)
@@ -460,7 +460,7 @@ def HA():
                 if ((ha_direction_up0 and ha_direction_up1 and ha_direction_up_long_0) or (ha_direction_up0 and ha_direction_up1 and ha_direction_up_long_0 and ha_direction_up_long_1) or (ha_direction_up0 and ha_direction_up1 and ha_direction_up_longer) and bought_quantity_sql > 0):
 
                     try:
-                        db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+                        db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
                         cursor = db.cursor()
                         printed = ('      '+ market + '   Received HA sell signal  ' + '  ' + HA_trend)
                         cursor.execute('update orders set sell = 0 where active=1 and market =("%s")' % market)
@@ -480,7 +480,7 @@ def HA():
 
 
                 try:
-                    db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+                    db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
                     cursor = db.cursor()
 
                     printed = ('      '+ market + '   The HA_hour is  ' + HA_trend + '  and HAH is ' + HAH_trend)
@@ -516,7 +516,7 @@ def HA():
 
 
                     try:
-                        db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+                        db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
                         cursor = db.cursor()
                         cursor.execute("update markets set strike_date=%s, strike_time2=%s, strike_info=%s  where market = %s",(currenttime, currtime, printed1, market))
                         db.commit()
@@ -532,7 +532,7 @@ def HA():
 
 
 def available_market_list(marketname):
-    db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+    db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
     cursor = db.cursor()
     market = marketname
     cursor.execute("SELECT * FROM markets WHERE active =1 and market = '%s'" % market)
@@ -558,7 +558,7 @@ def signed_request(url):
 
 
 def heikin_ashi(marketname, value):
-    db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+    db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
     cursor = db.cursor()
     market = marketname
     cursor.execute("SELECT * FROM markets WHERE market = '%s'" % market)
@@ -570,7 +570,7 @@ def heikin_ashi(marketname, value):
     return False
 
 def status_orders(marketname, value):
-    db = MySQLdb.connect("localhost", "cryptouser", "123456", "cryptodb")
+    db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
     cursor = db.cursor()
     market=marketname
     cursor.execute("SELECT * FROM orders WHERE active = 1 and market = '%s'" % market)
