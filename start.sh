@@ -5,37 +5,24 @@ while true
 do
 SERVICE0='heikin_ashi.py'
 
-if ps ax | grep -v grep | grep $SERVICE0 > /dev/null
-then
-    echo "$SERVICE0 service running "
-else
-    echo there is no such "$SERVICE0 service, starting"
-    python /usr/local/bin/heikin_ashi.py
-fi
+ps -ef | grep $SERVICE0 | grep -v grep
+[ $?  -eq "0" ] && echo "$SERVICE0 process is running" || echo "$SERVICE0 process is not running, starting"; python /usr/local/bin/heikin_ashi.py
 
 
 
 SERVICE1='heikin_day.py'
 
-if ps ax | grep -v grep | grep $SERVICE1 > /dev/null
-then
-    echo "$SERVICE1 service running "
-else
-    echo there is no such "$SERVICE1 service, starting"
-    python /usr/local/bin/heikin_day.py
-fi
+ps -ef | grep $SERVICE1 | grep -v grep
+[ $?  -eq "0" ] && echo "$SERVICE1 process is running" || echo "$SERVICE1 process is not running, starting"; python /usr/local/bin/heikin_day.py
+
 
 
 
 SERVICE2='btc_ha.py'
 
-if ps ax | grep -v grep | grep $SERVICE2 > /dev/null
-then
-    echo "$SERVICE2 service running "
-else
-    echo there is no such "$SERVICE2 service, starting"
-    python /usr/local/bin/btc_ha.py
-fi
+ps -ef | grep $SERVICE2 | grep -v grep
+[ $?  -eq "0" ] && echo "$SERVICE2 process is running" || echo "$SERVICE2 process is not running, starting"; python /usr/local/bin/btc_ha.py
+
 
 sleep 10
 done
