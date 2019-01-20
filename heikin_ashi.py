@@ -8,8 +8,8 @@ import hashlib
 import hmac
 import numpy
 import datetime
-#c = Client(api_key=config.key, api_secret=config.secret)
-c=Client(api_key="", api_secret="")
+c1 = Client(api_key=config.key, api_secret=config.secret)
+c=Client(api_key='', api_secret='')
 
 currtime = int(round(time.time()))
 now = datetime.datetime.now()
@@ -28,8 +28,6 @@ def main():
 
 def HA():
 
-
-
     market_summ = c.get_market_summaries().json()['result']
     for summary in market_summ: #Loop trough the market summary
         try:
@@ -38,134 +36,150 @@ def HA():
 
                 last = float(summary['Last'])  # last price
                 bought_quantity_sql = float(status_orders(market, 2))
-
                 HAD_trend = heikin_ashi(market, 18)
 
+                hlastcandle = get_candles(market, 'hour')['result'][-1:]
+                hcurrentlow = float(hlastcandle[0]['L'])*100000
+                hcurrenthigh = float(hlastcandle[0]['H'])*100000
+                hcurrentopen = float(hlastcandle[0]['O'])*100000
+                hcurrentclose = float(hlastcandle[0]['C'])*100000
+                hpreviouscandle = get_candles(market, 'hour')['result'][-2:]
+                hprevlow = float(hpreviouscandle[0]['L'])*100000
+                hprevhigh = float(hpreviouscandle[0]['H'])*100000
+                hprevopen = float(hpreviouscandle[0]['O'])*100000
+                hprevclose = float(hpreviouscandle[0]['C'])*100000
+                hpreviouscandle2 = get_candles(market, 'hour')['result'][-3:]
+                hprevlow2 = float(hpreviouscandle2[0]['L'])*100000
+                hprevhigh2 = float(hpreviouscandle2[0]['H'])*100000
+                hprevopen2 = float(hpreviouscandle2[0]['O'])*100000
+                hprevclose2 = float(hpreviouscandle2[0]['C'])*100000
+
+
                 hourlastcandle = get_candles(market, 'hour')['result'][-1:]
-                hourcurrentlow = float(hourlastcandle[0]['L'])
-                hourcurrenthigh = float(hourlastcandle[0]['H'])
-                hourcurrentopen = float(hourlastcandle[0]['O'])
-                hourcurrentclose = float(hourlastcandle[0]['C'])
+                hourcurrentlow = float(hourlastcandle[0]['L'])*100000
+                hourcurrenthigh = float(hourlastcandle[0]['H'])*100000
+                hourcurrentopen = float(hourlastcandle[0]['O'])*100000
+                hourcurrentclose = float(hourlastcandle[0]['C'])*100000
                 hourpreviouscandle = get_candles(market, 'hour')['result'][-2:]
-                hourprevlow = float(hourpreviouscandle[0]['L'])
-                hourprevhigh = float(hourpreviouscandle[0]['H'])
-                hourprevopen = float(hourpreviouscandle[0]['O'])
-                hourprevclose = float(hourpreviouscandle[0]['C'])
+                hourprevlow = float(hourpreviouscandle[0]['L'])*100000
+                hourprevhigh = float(hourpreviouscandle[0]['H'])*100000
+                hourprevopen = float(hourpreviouscandle[0]['O'])*100000
+                hourprevclose = float(hourpreviouscandle[0]['C'])*100000
                 hourpreviouscandle2 = get_candles(market, 'hour')['result'][-3:]
-                hourprevlow2 = float(hourpreviouscandle2[0]['L'])
-                hourprevhigh2 = float(hourpreviouscandle2[0]['H'])
-                hourprevopen2 = float(hourpreviouscandle2[0]['O'])
-                hourprevclose2 = float(hourpreviouscandle2[0]['C'])
+                hourprevlow2 = float(hourpreviouscandle2[0]['L'])*100000
+                hourprevhigh2 = float(hourpreviouscandle2[0]['H'])*100000
+                hourprevopen2 = float(hourpreviouscandle2[0]['O'])*100000
+                hourprevclose2 = float(hourpreviouscandle2[0]['C'])*100000
                 hourpreviouscandle3 = get_candles(market, 'hour')['result'][-4:]
-                hourprevlow3 = float(hourpreviouscandle3[0]['L'])
-                hourprevhigh3 = float(hourpreviouscandle3[0]['H'])
-                #hourprevopen3 = float(hourpreviouscandle3[0]['O'])
-                #hourprevclose3 = float(hourpreviouscandle3[0]['C'])
+                hourprevlow3 = float(hourpreviouscandle3[0]['L'])*100000
+                hourprevhigh3 = float(hourpreviouscandle3[0]['H'])*100000
+                #hourprevopen3 = float(hourpreviouscandle3[0]['O'])*100000
+                #hourprevclose3 = float(hourpreviouscandle3[0]['C'])*100000
                 hourpreviouscandle4 = get_candles(market, 'hour')['result'][-5:]
-                hourprevlow4 = float(hourpreviouscandle4[0]['L'])
-                hourprevhigh4 = float(hourpreviouscandle4[0]['H'])
-                hourprevopen4 = float(hourpreviouscandle4[0]['O'])
-                #hourprevclose4 = float(hourpreviouscandle4[0]['C'])
+                hourprevlow4 = float(hourpreviouscandle4[0]['L'])*100000
+                hourprevhigh4 = float(hourpreviouscandle4[0]['H'])*100000
+                hourprevopen4 = float(hourpreviouscandle4[0]['O'])*100000
+                #hourprevclose4 = float(hourpreviouscandle4[0]['C'])*100000
                 hourpreviouscandle5 = get_candles(market, 'hour')['result'][-6:]
-                hourprevlow5 = float(hourpreviouscandle5[0]['L'])
-                hourprevhigh5 = float(hourpreviouscandle5[0]['H'])
-                #hourprevopen5 = float(hourpreviouscandle5[0]['O'])
-                hourprevclose5 = float(hourpreviouscandle5[0]['C'])
+                hourprevlow5 = float(hourpreviouscandle5[0]['L'])*100000
+                hourprevhigh5 = float(hourpreviouscandle5[0]['H'])*100000
+                #hourprevopen5 = float(hourpreviouscandle5[0]['O'])*100000
+                hourprevclose5 = float(hourpreviouscandle5[0]['C'])*100000
                 hourpreviouscandle6 = get_candles(market, 'hour')['result'][-7:]
-                hourprevlow6 = float(hourpreviouscandle6[0]['L'])
-                hourprevhigh6 = float(hourpreviouscandle6[0]['H'])
-                #hourprevopen6 = float(hourpreviouscandle6[0]['O'])
-                #hourprevclose6 = float(hourpreviouscandle6[0]['C'])
+                hourprevlow6 = float(hourpreviouscandle6[0]['L'])*100000
+                hourprevhigh6 = float(hourpreviouscandle6[0]['H'])*100000
+                #hourprevopen6 = float(hourpreviouscandle6[0]['O'])*100000
+                #hourprevclose6 = float(hourpreviouscandle6[0]['C'])*100000
                 hourpreviouscandle7 = get_candles(market, 'hour')['result'][-8:]
-                hourprevlow7 = float(hourpreviouscandle7[0]['L'])
-                hourprevhigh7 = float(hourpreviouscandle7[0]['H'])
-                #hourprevopen7 = float(hourpreviouscandle7[0]['O'])
-                #hourprevclose7 = float(hourpreviouscandle7[0]['C'])
+                hourprevlow7 = float(hourpreviouscandle7[0]['L'])*100000
+                hourprevhigh7 = float(hourpreviouscandle7[0]['H'])*100000
+                #hourprevopen7 = float(hourpreviouscandle7[0]['O'])*100000
+                #hourprevclose7 = float(hourpreviouscandle7[0]['C'])*100000
                 hourpreviouscandle8 = get_candles(market, 'hour')['result'][-9:]
-                hourprevlow8 = float(hourpreviouscandle8[0]['L'])
-                hourprevhigh8 = float(hourpreviouscandle8[0]['H'])
-                #hourprevopen8 = float(hourpreviouscandle8[0]['O'])
-                #hourprevclose8 = float(hourpreviouscandle8[0]['C'])
+                hourprevlow8 = float(hourpreviouscandle8[0]['L'])*100000
+                hourprevhigh8 = float(hourpreviouscandle8[0]['H'])*100000
+                #hourprevopen8 = float(hourpreviouscandle8[0]['O'])*100000
+                #hourprevclose8 = float(hourpreviouscandle8[0]['C'])*100000
                 hourpreviouscandle9 = get_candles(market, 'hour')['result'][-10:]
-                hourprevlow9 = float(hourpreviouscandle9[0]['L'])
-                hourprevhigh9 = float(hourpreviouscandle9[0]['H'])
-                hourprevopen9 = float(hourpreviouscandle9[0]['O'])
-                #hourprevclose9 = float(hourpreviouscandle9[0]['C'])
+                hourprevlow9 = float(hourpreviouscandle9[0]['L'])*100000
+                hourprevhigh9 = float(hourpreviouscandle9[0]['H'])*100000
+                hourprevopen9 = float(hourpreviouscandle9[0]['O'])*100000
+                #hourprevclose9 = float(hourpreviouscandle9[0]['C'])*100000
                 hourpreviouscandle10 = get_candles(market, 'hour')['result'][-11:]
-                hourprevlow10 = float(hourpreviouscandle10[0]['L'])
-                hourprevhigh10 = float(hourpreviouscandle10[0]['H'])
-                #hourprevopen10 = float(hourpreviouscandle10[0]['O'])
-                hourprevclose10 = float(hourpreviouscandle10[0]['C'])
+                hourprevlow10 = float(hourpreviouscandle10[0]['L'])*100000
+                hourprevhigh10 = float(hourpreviouscandle10[0]['H'])*100000
+                #hourprevopen10 = float(hourpreviouscandle10[0]['O'])*100000
+                hourprevclose10 = float(hourpreviouscandle10[0]['C'])*100000
                 hourpreviouscandle11 = get_candles(market, 'hour')['result'][-12:]
-                hourprevlow11 = float(hourpreviouscandle11[0]['L'])
-                hourprevhigh11 = float(hourpreviouscandle11[0]['H'])
-                #hourprevopen11 = float(hourpreviouscandle11[0]['O'])
-                #hourprevclose11 = float(hourpreviouscandle11[0]['C'])
+                hourprevlow11 = float(hourpreviouscandle11[0]['L'])*100000
+                hourprevhigh11 = float(hourpreviouscandle11[0]['H'])*100000
+                #hourprevopen11 = float(hourpreviouscandle11[0]['O'])*100000
+                #hourprevclose11 = float(hourpreviouscandle11[0]['C'])*100000
                 hourpreviouscandle12 = get_candles(market, 'hour')['result'][-13:]
-                hourprevlow12 = float(hourpreviouscandle12[0]['L'])
-                hourprevhigh12 = float(hourpreviouscandle12[0]['H'])
-                #hourprevopen12 = float(hourpreviouscandle12[0]['O'])
-                #hourprevclose12 = float(hourpreviouscandle12[0]['C'])
+                hourprevlow12 = float(hourpreviouscandle12[0]['L'])*100000
+                hourprevhigh12 = float(hourpreviouscandle12[0]['H'])*100000
+                #hourprevopen12 = float(hourpreviouscandle12[0]['O'])*100000
+                #hourprevclose12 = float(hourpreviouscandle12[0]['C'])*100000
                 hourpreviouscandle13 = get_candles(market, 'hour')['result'][-14:]
-                hourprevlow13 = float(hourpreviouscandle13[0]['L'])
-                hourprevhigh13 = float(hourpreviouscandle13[0]['H'])
-                #hourprevopen13 = float(hourpreviouscandle13[0]['O'])
-                #hourprevclose13 = float(hourpreviouscandle13[0]['C'])
+                hourprevlow13 = float(hourpreviouscandle13[0]['L'])*100000
+                hourprevhigh13 = float(hourpreviouscandle13[0]['H'])*100000
+                #hourprevopen13 = float(hourpreviouscandle13[0]['O'])*100000
+                #hourprevclose13 = float(hourpreviouscandle13[0]['C'])*100000
                 hourpreviouscandle14 = get_candles(market, 'hour')['result'][-15:]
-                hourprevlow14 = float(hourpreviouscandle14[0]['L'])
-                hourprevhigh14 = float(hourpreviouscandle14[0]['H'])
-                hourprevopen14 = float(hourpreviouscandle14[0]['O'])
-                #hourprevclose14 = float(hourpreviouscandle14[0]['C'])
+                hourprevlow14 = float(hourpreviouscandle14[0]['L'])*100000
+                hourprevhigh14 = float(hourpreviouscandle14[0]['H'])*100000
+                hourprevopen14 = float(hourpreviouscandle14[0]['O'])*100000
+                #hourprevclose14 = float(hourpreviouscandle14[0]['C'])*100000
                 hourpreviouscandle15 = get_candles(market, 'hour')['result'][-16:]
-                hourprevlow15 = float(hourpreviouscandle15[0]['L'])
-                hourprevhigh15 = float(hourpreviouscandle15[0]['H'])
-                #hourprevopen15 = float(hourpreviouscandle15[0]['O'])
-                hourprevclose15 = float(hourpreviouscandle15[0]['C'])
+                hourprevlow15 = float(hourpreviouscandle15[0]['L'])*100000
+                hourprevhigh15 = float(hourpreviouscandle15[0]['H'])*100000
+                #hourprevopen15 = float(hourpreviouscandle15[0]['O'])*100000
+                hourprevclose15 = float(hourpreviouscandle15[0]['C'])*100000
                 hourpreviouscandle16 = get_candles(market, 'hour')['result'][-17:]
-                hourprevlow16 = float(hourpreviouscandle16[0]['L'])
-                hourprevhigh16 = float(hourpreviouscandle16[0]['H'])
-                #hourprevopen16 = float(hourpreviouscandle16[0]['O'])
-                #hourprevclose16 = float(hourpreviouscandle16[0]['C'])
+                hourprevlow16 = float(hourpreviouscandle16[0]['L'])*100000
+                hourprevhigh16 = float(hourpreviouscandle16[0]['H'])*100000
+                #hourprevopen16 = float(hourpreviouscandle16[0]['O'])*100000
+                #hourprevclose16 = float(hourpreviouscandle16[0]['C'])*100000
                 hourpreviouscandle17 = get_candles(market, 'hour')['result'][-18:]
-                hourprevlow17 = float(hourpreviouscandle17[0]['L'])
-                hourprevhigh17 = float(hourpreviouscandle17[0]['H'])
-                #hourprevopen17 = float(hourpreviouscandle17[0]['O'])
-                #hourprevclose17 = float(hourpreviouscandle17[0]['C'])
+                hourprevlow17 = float(hourpreviouscandle17[0]['L'])*100000
+                hourprevhigh17 = float(hourpreviouscandle17[0]['H'])*100000
+                #hourprevopen17 = float(hourpreviouscandle17[0]['O'])*100000
+                #hourprevclose17 = float(hourpreviouscandle17[0]['C'])*100000
                 hourpreviouscandle18 = get_candles(market, 'hour')['result'][-19:]
-                hourprevlow18 = float(hourpreviouscandle18[0]['L'])
-                hourprevhigh18 = float(hourpreviouscandle18[0]['H'])
-                #hourprevopen18 = float(hourpreviouscandle18[0]['O'])
-                #hourprevclose18 = float(hourpreviouscandle18[0]['C'])
+                hourprevlow18 = float(hourpreviouscandle18[0]['L'])*100000
+                hourprevhigh18 = float(hourpreviouscandle18[0]['H'])*100000
+                #hourprevopen18 = float(hourpreviouscandle18[0]['O'])*100000
+                #hourprevclose18 = float(hourpreviouscandle18[0]['C'])*100000
                 hourpreviouscandle19 = get_candles(market, 'hour')['result'][-20:]
-                hourprevlow19 = float(hourpreviouscandle19[0]['L'])
-                hourprevhigh19 = float(hourpreviouscandle19[0]['H'])
-                hourprevopen19 = float(hourpreviouscandle19[0]['O'])
-                #hourprevclose19 = float(hourpreviouscandle19[0]['C'])
+                hourprevlow19 = float(hourpreviouscandle19[0]['L'])*100000
+                hourprevhigh19 = float(hourpreviouscandle19[0]['H'])*100000
+                hourprevopen19 = float(hourpreviouscandle19[0]['O'])*100000
+                #hourprevclose19 = float(hourpreviouscandle19[0]['C'])*100000
                 hourpreviouscandle20 = get_candles(market, 'hour')['result'][-21:]
-                hourprevlow20 = float(hourpreviouscandle20[0]['L'])
-                hourprevhigh20 = float(hourpreviouscandle20[0]['H'])
-                #hourprevopen20 = float(hourpreviouscandle20[0]['O'])
-                hourprevclose20 = float(hourpreviouscandle20[0]['C'])
+                hourprevlow20 = float(hourpreviouscandle20[0]['L'])*100000
+                hourprevhigh20 = float(hourpreviouscandle20[0]['H'])*100000
+                #hourprevopen20 = float(hourpreviouscandle20[0]['O'])*100000
+                hourprevclose20 = float(hourpreviouscandle20[0]['C'])*100000
                 hourpreviouscandle21 = get_candles(market, 'hour')['result'][-22:]
-                hourprevlow21 = float(hourpreviouscandle21[0]['L'])
-                hourprevhigh21 = float(hourpreviouscandle21[0]['H'])
-                #hourprevopen21 = float(hourpreviouscandle21[0]['O'])
-                #hourprevclose21 = float(hourpreviouscandle21[0]['C'])
+                hourprevlow21 = float(hourpreviouscandle21[0]['L'])*100000
+                hourprevhigh21 = float(hourpreviouscandle21[0]['H'])*100000
+                #hourprevopen21 = float(hourpreviouscandle21[0]['O'])*100000
+                #hourprevclose21 = float(hourpreviouscandle21[0]['C'])*100000
                 hourpreviouscandle22 = get_candles(market, 'hour')['result'][-23:]
-                hourprevlow22 = float(hourpreviouscandle22[0]['L'])
-                hourprevhigh22 = float(hourpreviouscandle22[0]['H'])
-                #hourprevopen22 = float(hourpreviouscandle22[0]['O'])
-                #hourprevclose22 = float(hourpreviouscandle22[0]['C'])
+                hourprevlow22 = float(hourpreviouscandle22[0]['L'])*100000
+                hourprevhigh22 = float(hourpreviouscandle22[0]['H'])*100000
+                #hourprevopen22 = float(hourpreviouscandle22[0]['O'])*100000
+                #hourprevclose22 = float(hourpreviouscandle22[0]['C'])*100000
                 hourpreviouscandle23 = get_candles(market, 'hour')['result'][-24:]
-                hourprevlow23 = float(hourpreviouscandle23[0]['L'])
-                hourprevhigh23 = float(hourpreviouscandle23[0]['H'])
-                #hourprevopen23 = float(hourpreviouscandle23[0]['O'])
-                #hourprevclose23 = float(hourpreviouscandle23[0]['C'])
+                hourprevlow23 = float(hourpreviouscandle23[0]['L'])*100000
+                hourprevhigh23 = float(hourpreviouscandle23[0]['H'])*100000
+                #hourprevopen23 = float(hourpreviouscandle23[0]['O'])*100000
+                #hourprevclose23 = float(hourpreviouscandle23[0]['C'])*100000
                 hourpreviouscandle24 = get_candles(market, 'hour')['result'][-25:]
-                hourprevlow24 = float(hourpreviouscandle24[0]['L'])
-                hourprevhigh24 = float(hourpreviouscandle24[0]['H'])
-                hourprevopen24 = float(hourpreviouscandle24[0]['O'])
-                #hourprevclose24 = float(hourpreviouscandle24[0]['C'])
+                hourprevlow24 = float(hourpreviouscandle24[0]['L'])*100000
+                hourprevhigh24 = float(hourpreviouscandle24[0]['H'])*100000
+                hourprevopen24 = float(hourpreviouscandle24[0]['O'])*100000
+                #hourprevclose24 = float(hourpreviouscandle24[0]['C'])*100000
 
 
 
@@ -202,28 +216,6 @@ def HA():
                 fivehourprevclose4 = hourprevclose20
 
 
-
-                hlastcandle = get_candles(market, 'hour')['result'][-1:]
-                hcurrentlow = float(hlastcandle[0]['L'])
-                hcurrenthigh = float(hlastcandle[0]['H'])
-                hcurrentopen = float(hlastcandle[0]['O'])
-                hcurrentclose = float(hlastcandle[0]['C'])
-                hpreviouscandle = get_candles(market, 'hour')['result'][-2:]
-                hprevlow = float(hpreviouscandle[0]['L'])
-                hprevhigh = float(hpreviouscandle[0]['H'])
-                hprevopen = float(hpreviouscandle[0]['O'])
-                hprevclose = float(hpreviouscandle[0]['C'])
-                hpreviouscandle2 = get_candles(market, 'hour')['result'][-3:]
-                hprevlow2 = float(hpreviouscandle2[0]['L'])
-                hprevhigh2 = float(hpreviouscandle2[0]['H'])
-                hprevopen2 = float(hpreviouscandle2[0]['O'])
-                hprevclose2 = float(hpreviouscandle2[0]['C'])
-
-
-
-
-
-
                 HA_PREV_Close4 = (fivehourprevopen4 + fivehourprevhigh4 + fivehourprevlow4 + fivehourprevclose4) / 4
                 HA_PREV_Open4 = (fivehourprevopen4 + fivehourprevclose4) / 2
                 HA_PREV_Low4 = fivehourprevlow4
@@ -253,6 +245,10 @@ def HA():
                 elements0 = numpy.array([fivehourcurrenthigh, fivehourcurrentlow, HA_Open, HA_Close])
                 HA_High = elements0.max(0)
                 HA_Low = elements0.min(0)
+
+
+
+
 
 
                 HAH_PREV_Close2 = (hprevopen2 + hprevhigh2 + hprevlow2 + hprevclose2) / 4
@@ -418,9 +414,7 @@ def HA():
 
 
 
-
-
-                if ((ha_direction_down0 and ha_direction_down1  and ha_direction_down_long_0) or (ha_direction_down0  and ha_direction_down1 and ha_direction_down_long_0 and ha_direction_down_long_1) or (ha_direction_down0 and ha_direction_down1 and ha_direction_down_longer)) and bought_quantity_sql > 0 and HAD_trend!='UP' and (hah_direction_down_long_0 or hah_direction_down0):
+                if ((ha_direction_down0 and ha_direction_down1  and ha_direction_down_long_0) or (ha_direction_down0 and ha_direction_down1  and ha_direction_down_long_0 and ha_direction_down_long_1) or (ha_direction_down0 and ha_direction_down1 and ha_direction_down_longer)) and bought_quantity_sql > 0 and HAD_trend!='UP' and (hah_direction_down_long_0 or hah_direction_down0):
 
                     try:
                         db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
@@ -436,11 +430,12 @@ def HA():
                     finally:
                         db.close()
 
-
                 lastcandlesize= fivehourcurrenthigh-fivehourcurrentlow
-                prevcandlesize = fivehourprevhigh - fivehourprevlow
+                prevcandlesize= fivehourprevhigh-fivehourprevlow
+                lastcandlebodysize = numpy.abs(fivehourcurrentopen - last)
+                prevcandlebodysize = numpy.abs(fivehourprevopen - fivehourprevclose)
 
-                if (lastcandlesize>prevcandlesize and fivehourcurrentopen>last and fivehourprevopen<fivehourprevclose and HAH_trend!='UP'):
+                if ((lastcandlesize>prevcandlesize or lastcandlebodysize>prevcandlebodysize) and fivehourcurrentopen>last and fivehourprevopen<fivehourprevclose and HAH_trend!="UP" and bought_quantity_sql > 0):
                     try:
                         db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
                         cursor = db.cursor()
@@ -455,7 +450,7 @@ def HA():
                     finally:
                         db.close()
 
-
+                print market, lastcandlesize, prevcandlesize, fivehourcurrentopen, last, fivehourprevopen, fivehourprevclose, HAH_trend, lastcandlebodysize, prevcandlebodysize
 
                 if ((ha_direction_up0 and ha_direction_up1 and ha_direction_up_long_0) or (ha_direction_up0 and ha_direction_up1 and ha_direction_up_long_0 and ha_direction_up_long_1) or (ha_direction_up0 and ha_direction_up1 and ha_direction_up_longer) and bought_quantity_sql > 0):
 
@@ -474,7 +469,7 @@ def HA():
                         db.close()
 
 
-
+#                print market, last, HA_trend, HAH_trend
 
 
 
@@ -485,6 +480,10 @@ def HA():
 
                     printed = ('      '+ market + '   The HA_hour is  ' + HA_trend + '  and HAH is ' + HAH_trend)
                     cursor.execute("update markets set current_price = %s, ha_direction =%s,  ha_direction_hour=%s  where market = %s and active =1",(last, HA_trend,  HAH_trend, market))
+                    if status_orders(market, 4) == 1:
+                        cursor.execute('insert into orderlogs(market, signals, time) values("%s", "%s", "%s")' % (market, str(currenttime)+' HA: ' + str(HA_trend) + 'HAH: ' + str(HAH_trend), currtime))
+                    else:
+                        pass
                     #cursor.execute('insert into ha_logs (date, market, HA_hour, log ) values ("%s", "%s", "%s", "%s")' % (currenttime, market, HA_trend, printed))
                     #cursor.execute('insert into logs(date, log_entry) values("%s", "%s")' % (currenttime, printed))
                     db.commit()
@@ -497,34 +496,41 @@ def HA():
 
 
 
-                lastcandlesize = hourcurrenthigh-hourcurrentlow
-                previouscandlesize = hourprevhigh-hourprevlow
-                previouscandlesize2 = hourprevhigh2-hourprevlow2
-                previouscandlesize3 = hourprevhigh3-hourprevlow3
-                previouscandlesize4 = hourprevhigh4-hourprevlow4
-                previouscandlesize5 = hourprevhigh5-hourprevlow5
-                previouscandlesize6 =  hourprevhigh6- hourprevlow6
+#                lastcandlesize = hourcurrenthigh-hourcurrentlow
+#                previouscandlesize = hourprevhigh-hourprevlow
+#                previouscandlesize2 = hourprevhigh2-hourprevlow2
+#                previouscandlesize3 = hourprevhigh3-hourprevlow3
+#                previouscandlesize4 = hourprevhigh4-hourprevlow4
+#                previouscandlesize5 = hourprevhigh5-hourprevlow5
+#                previouscandlesize6 =  hourprevhigh6- hourprevlow6
 
-                averagecandlesize=(previouscandlesize6+previouscandlesize5+previouscandlesize4)/3
+#                averagecandlesize=(previouscandlesize6+previouscandlesize5+previouscandlesize4)/3
                 #print market, averagecandlesize, lastcandlesize, previouscandlesize, previouscandlesize2, previouscandlesize3
 
 
-                if (lastcandlesize/averagecandlesize>3 and last>hourcurrentopen) or (previouscandlesize2/averagecandlesize>3 and hourprevclose>hourprevopen) or (previouscandlesize3/averagecandlesize>3 and hourprevclose2>hourprevopen2) and last> hourprevhigh6:
-                    print "We have peak situation, lets wait"
-                    printed1=("We have peak situation, lets wait")
+#                if (lastcandlesize/averagecandlesize>3 and last>hourcurrentopen) or (previouscandlesize2/averagecandlesize>3 and hourprevclose>hourprevopen) or (previouscandlesize3/averagecandlesize>3 and hourprevclose2>hourprevopen2) and last> hourprevhigh6:
+#                    print "We have peak situation, lets wait"
+#                    printed1=("We have peak situation, lets wait")
 
 
 
-                    try:
-                        db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
-                        cursor = db.cursor()
-                        cursor.execute("update markets set strike_date=%s, strike_time2=%s, strike_info=%s  where market = %s",(currenttime, currtime, printed1, market))
-                        db.commit()
-                    except MySQLdb.Error, e:
-                        print "Error %d: %s" % (e.args[0], e.args[1])
-                        sys.exit(1)
-                    finally:
-                        db.close()
+#                    try:
+#                        db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
+#                        cursor = db.cursor()
+                        #cursor.execute("update markets set strike_date=%s, strike_info=%s  where market = %s",(currenttime, printed1, market))
+#                        cursor.execute(
+#                            "update markets set strike_date=%s, strike_time2=%s, strike_info=%s  where market = %s",
+#                            (currenttime, currtime, printed1, market))
+#                        db.commit()
+#                    except MySQLdb.Error, e:
+#                        print "Error %d: %s" % (e.args[0], e.args[1])
+#                        sys.exit(1)
+#                    finally:
+#                        db.close()
+
+
+
+
 
         except:
             continue
