@@ -512,7 +512,7 @@ def HA():
 
 
                 if (lastcandlesize/averagecandlesize>3 and last*1000>hourcurrentopen) or (previouscandlesize2/averagecandlesize>3 and hourprevclose*1000>hourprevopen*1000) or (previouscandlesize3/averagecandlesize>3 and hourprevclose2*1000>hourprevopen2*1000) and last*1000> hourprevhigh6*1000:
-                    print "We have peak situation, lets wait"
+                    print market, "We have peak situation, lets wait"
                     printed1=("We have peak situation, lets wait")
 
 
@@ -524,6 +524,12 @@ def HA():
                         cursor.execute(
                             "update markets set strike_date=%s, strike_time2=%s, strike_info=%s  where market = %s",
                             (currenttime, currtime, printed1, market))
+                        if status_orders(market, 4) == 1:
+                            cursor.execute(
+                                'insert into orderlogs(market, signals, time, orderid) values("%s", "%s", "%s", "%s")' % (
+                                market, printed1, currtime, status_orders(market, 0)))
+                        else:
+                            pass
                         db.commit()
                     except MySQLdb.Error, e:
                         print "Error %d: %s" % (e.args[0], e.args[1])
