@@ -37,6 +37,7 @@ def HA():
                 last = float(summary['Last'])  # last price
                 bought_quantity_sql = float(status_orders(market, 2))
                 HAD_trend = heikin_ashi(market, 18)
+                ha_old_time=heikin_ashi(market, 23)
                 print "Gather hour HA candle info for ", market
 
                 hlastcandle = get_candles(market, 'hour')['result'][-1:]
@@ -476,25 +477,27 @@ def HA():
 
 
 
+                if currtime-ha_old_time>7200:
+                    try:
+                        db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
+                        cursor = db.cursor()
 
-                try:
-                    db = MySQLdb.connect("database-service", "cryptouser", "123456", "cryptodb")
-                    cursor = db.cursor()
-
-                    printed = ('      '+ market + '   The HA_hour is  ' + HA_trend + '  and HAH is ' + HAH_trend)
-                    cursor.execute("update markets set current_price = %s, ha_direction =%s,  ha_direction_hour=%s  where market = %s and active =1",(last, HA_trend,  HAH_trend, market))
-                    if status_orders(market, 4) == 1:
-                        cursor.execute('insert into orderlogs(market, signals, time, orderid) values("%s", "%s", "%s", "%s")' % (market, str(currenttime)+' HA: ' + str(HA_trend) + ' HAH: ' + str(HAH_trend), currtime, status_orders(market, 0)))
-                    else:
-                        pass
-                    #cursor.execute('insert into ha_logs (date, market, HA_hour, log ) values ("%s", "%s", "%s", "%s")' % (currenttime, market, HA_trend, printed))
-                    #cursor.execute('insert into logs(date, log_entry) values("%s", "%s")' % (currenttime, printed))
-                    db.commit()
-                except MySQLdb.Error, e:
-                    print "Error %d: %s" % (e.args[0], e.args[1])
-                    sys.exit(1)
-                finally:
-                    db.close()
+                        printed = ('      '+ market + '   The HA_hour is  ' + HA_trend + '  and HAH is ' + HAH_trend)
+                        cursor.execute("update markets set current_price = %s, ha_direction =%s,  ha_direction_hour=%s  where market = %s and active =1",(last, HA_trend,  HAH_trend, market))
+                        if status_orders(market, 4) == 1:
+                            cursor.execute('insert into orderlogs(market, signals, time, orderid) values("%s", "%s", "%s", "%s")' % (market, str(currenttime)+' HA: ' + str(HA_trend) + ' HAH: ' + str(HAH_trend), currtime, status_orders(market, 0)))
+                        else:
+                            pass
+                        #cursor.execute('insert into ha_logs (date, market, HA_hour, log ) values ("%s", "%s", "%s", "%s")' % (currenttime, market, HA_trend, printed))
+                        #cursor.execute('insert into logs(date, log_entry) values("%s", "%s")' % (currenttime, printed))
+                        db.commit()
+                    except MySQLdb.Error, e:
+                        print "Error %d: %s" % (e.args[0], e.args[1])
+                        sys.exit(1)
+                    finally:
+                        db.close()
+                else:
+                    pass
 
 
 
