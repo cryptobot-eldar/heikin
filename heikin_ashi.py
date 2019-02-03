@@ -496,8 +496,7 @@ def HA():
                         sys.exit(1)
                     finally:
                         db.close()
-                else:
-                    pass
+
 
 
 
