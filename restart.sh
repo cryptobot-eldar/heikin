@@ -1,4 +1,4 @@
 #!/bin/bash
 
 sleep 60
-kill 1
+ps x | awk {'{print $1}'} | awk 'NR > 1' | xargs kill
